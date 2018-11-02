@@ -8,8 +8,8 @@ class Point{
     this.y = y;
   }
   
-  //String toString(){
-  //  return (x + ", " + y);
-  //}
+  String toString(){
+    return (x + ", " + y);
+  }
   
 }

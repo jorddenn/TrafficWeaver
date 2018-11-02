@@ -15,8 +15,9 @@ int lanes;
 
 void setup(){
   size(500, 1000);
+  
   speed = 5;
-  density = 0.5;
+  density = 1;
   lanes = 4;
   
   slot = new int[lanes];
@@ -39,10 +40,13 @@ void generateCars(){
 }
 
 void removeCars(){
-  for (Car car: cars){
-    if (car.y > height){
-      car = null;
-    }
+  Iterator<Car> iter = cars.iterator();
+
+  while (iter.hasNext()) {
+    Car car = iter.next();
+
+    if (car.y > height)
+        iter.remove();
   }
 }
 
@@ -55,11 +59,6 @@ void generatePaths(ArrayList<Point> curPath, Point curPoint){
       }
     }
   }
-  
-  //println(nextClosest);
-  //println(curPoint);
-  //delay(1);
-  
   
   if (curPoint.y <= 0){
     curPath.add(curPoint);
@@ -98,9 +97,10 @@ void generatePaths(ArrayList<Point> curPath, Point curPoint){
 
 boolean checkSides(Point curPoint, boolean left){
   if(curPoint.x / 100 == 0 && left) return false; //already in left most lane
-  if(curPoint.x / 100 == lanes && !left) return false; //already in right most lane
+  if(curPoint.x / 100 == lanes - 1 && !left) return false; //already in right most lane
   
   ArrayList<Car> lane = new ArrayList<Car>();
+  lane.trimToSize();
   
   for(Car car : cars){
     if (car.x == curPoint.x - 100 && left){
@@ -113,7 +113,7 @@ boolean checkSides(Point curPoint, boolean left){
   
   if (lane.size() == 0) return true;
   
-  if ((lane.size() == 1) && (lane.get(0).y + 175 < curPoint.y || lane.get(0).y > curPoint.y + 125)){
+  if ((lane.size() == 1) && (lane.get(0).y + 175 <= curPoint.y || lane.get(0).y >= curPoint.y + 125)){
     return true;
   }
   
@@ -141,6 +141,7 @@ void sort(ArrayList<Car> lane){
 }
 
 void draw(){
+  println(cars.size());
   background(100);
   fill(255, 255, 0);
   noStroke();
@@ -167,9 +168,8 @@ void draw(){
   pathPoints.clear();
   
   pathPoints.add(new Point(user.x, user.y));
-  
+
   generatePaths(pathPoints, pathPoints.get(0));
-  
   for (int p = 0; p < paths.size(); p++){
     stroke((p + 50) * p);
     strokeWeight(2);
