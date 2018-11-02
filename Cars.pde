@@ -31,4 +31,8 @@ class Car{
     fill(r, g, b);
     rect(x, y, 50, 125, 5);
   }
+  
+  String toString(){
+    return (x + ", " + y);
+  }
 }
