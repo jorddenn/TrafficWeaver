@@ -13,6 +13,15 @@ class Car{
     b = int(random(255));
   }
   
+  Car(int x, int y){
+    this.x = x;
+    this.y = y;
+    this.speed = 0;
+    r = 255;
+    g = 255;
+    b = 0;
+  }
+  
   void update(){
     y += speed;
   }
