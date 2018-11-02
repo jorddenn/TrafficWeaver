@@ -1,3 +1,7 @@
+import controlP5.*;
+
+ControlP5 p5;
+
 ArrayList<ArrayList<Point>> paths = new ArrayList<ArrayList<Point>>();
 ArrayList<Point> pathPoints = new ArrayList<Point>();
 
@@ -7,25 +11,33 @@ Car user = new Car(175, 800);
 Line[] lines;
 int[] slot;
 
-int DEEP = 0;
-
 int speed; 
 float density; //max desnity = 129
 int lanes;
 
+
+
 void setup(){
-  size(500, 1000);
+  size(500, 1100);
+  
+  p5 = new ControlP5(this);
+  
+  //name, minimum, maximum, default value (float), x, y, width, height
+  p5.addSlider("desnity",1,10,3,10,1010,200,25);
+  p5.addSlider("lanes",1,10,3,10,1040,200,25);
+  p5.addSlider("speed",1,10,3,10,1070,200,25);
   
   speed = 5;
-  density = 1;
-  lanes = 4;
+  density = 2;
+  lanes = 5;
   
   slot = new int[lanes];
-  lines = new Line[7*lanes];
-  
-  for (int r = 0; r < lanes; r++){
-    for(int t = 0; t < 7; t++)
-      lines[lanes * t + r] = new Line (145 + 100 * r, 0 + t * 150, speed);
+  lines = new Line[((height/150) + 1) * (lanes - 1)];
+    
+  for (int r = 0; r < lanes - 1; r++){
+    for(int t = 0; t < (height/150) + 1; t++){
+      lines[(lanes - 1) * t + r] = new Line (145 + 100 * r, 0 + t * 150, speed);
+    }
   }
 }
 
@@ -100,7 +112,6 @@ boolean checkSides(Point curPoint, boolean left){
   if(curPoint.x / 100 == lanes - 1 && !left) return false; //already in right most lane
   
   ArrayList<Car> lane = new ArrayList<Car>();
-  lane.trimToSize();
   
   for(Car car : cars){
     if (car.x == curPoint.x - 100 && left){
@@ -141,13 +152,13 @@ void sort(ArrayList<Car> lane){
 }
 
 void draw(){
-  println(cars.size());
+  surface.setSize(100 + 100 * lanes, height);
   background(100);
   fill(255, 255, 0);
   noStroke();
   strokeWeight(1);
   rect(45, 0, 10, height);
-  rect(445, 0, 10, height);
+  rect(45 + 100 * lanes, 0, 10, height);
   
   removeCars();
   generateCars();
@@ -177,4 +188,7 @@ void draw(){
       line(paths.get(p).get(pp).x + 25 + (5 * p), paths.get(p).get(pp).y + (5 * p), paths.get(p).get(pp + 1).x + 25 + (5 * p), paths.get(p).get(pp + 1).y + (5 * p));
     }
   }
+  
+  fill(0);
+  rect(0, 1000, width, 100);
 }
