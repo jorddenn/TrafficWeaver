@@ -23,17 +23,23 @@ void setup(){
   p5 = new ControlP5(this);
   
   //name, minimum, maximum, default value (float), x, y, width, height
-  p5.addSlider("desnity",1,10,3,10,1010,200,25);
-  p5.addSlider("lanes",1,10,3,10,1040,200,25);
-  p5.addSlider("speed",1,10,3,10,1070,200,25);
+  p5.addSlider("desnity", 1, 10, 1, 10, 1010, 200, 25);
+  p5.addSlider("lanes", 1, 10, 4, 10, 1040, 200, 25);
+  p5.addSlider("speed", 1, 20, 5, 10, 1070, 200, 25);
+  p5.addButton("left").setPosition(300, 1025).setSize(50,50);
+  p5.addButton("right").setPosition(375, 1025).setSize(50,50);
   
   speed = 5;
-  density = 2;
-  lanes = 5;
+  density = 1;
+  lanes = 4;
   
+  snlSetup();
+}
+
+void snlSetup(){
   slot = new int[lanes];
   lines = new Line[((height/150) + 1) * (lanes - 1)];
-    
+  
   for (int r = 0; r < lanes - 1; r++){
     for(int t = 0; t < (height/150) + 1; t++){
       lines[(lanes - 1) * t + r] = new Line (145 + 100 * r, 0 + t * 150, speed);
@@ -146,6 +152,42 @@ void sort(ArrayList<Car> lane){
         Car temp = lane.get(r + 1);
         lane.set(r + 1, lane.get(r));
         lane.set(r, temp);
+      }
+    }
+  }
+}
+
+void controlEvent(ControlEvent theEvent) {
+  if(theEvent.isController()) { 
+    print("control event from : "+theEvent.getController().getName());
+    println(", value : "+theEvent.getController().getValue());
+    if(theEvent.getController().getName()=="desnity") {
+      density = floor(theEvent.getController().getValue());
+    }
+    if(theEvent.getController().getName()=="speed") {
+      speed = floor(theEvent.getController().getValue());
+      
+      for (Car car : cars){
+        car.speed = speed;
+      }
+      for (Line line : lines){
+        line.speed = speed;
+      }
+    }
+    if(theEvent.getController().getName()=="lanes") {
+      lanes = floor(theEvent.getController().getValue());
+      snlSetup();
+    }
+    
+    if(theEvent.getController().getName()=="left") {
+      if(user.x / 100 != 0){
+        user.x -= 100;
+      }
+    }
+    
+    if(theEvent.getController().getName()=="right") {
+      if(user.x / 100 != lanes - 1){
+        user.x += 100;
       }
     }
   }
