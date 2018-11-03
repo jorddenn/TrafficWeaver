@@ -26,7 +26,7 @@ int count = 0;
 boolean shift = false;
 
 //users car using alternate constructor
-Car user = new Car(275, 800);
+Car user = new Car(175, 800);
 
 void setup(){
   size(500, 1100);
