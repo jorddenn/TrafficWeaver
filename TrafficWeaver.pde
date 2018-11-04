@@ -26,23 +26,25 @@ int count = 0;
 boolean shift = false;
 
 //users car using alternate constructor
-Car user = new Car(175, 800);
+Car user;
 
 void setup(){
-  size(500, 1100);
+  size(500, 1000);
+  
+  user = new Car(175, height - 300);
   
   p5 = new ControlP5(this);
   
   //name, minimum, maximum, default value (float), x, y, width, height //typical variable order
-  p5.addSlider("desnity", 1, 10, 1, 10, 1005, 200, 25);
-  p5.addSlider("lanes", 1, 10, 4, 10, 1037, 200, 25);
-  p5.addSlider("speed", 1, 20, 5, 10, 1070, 200, 25);
-  p5.addButton("left").setPosition(275, 1015).setSize(75, 25);
-  p5.addButton("right").setPosition(375, 1015).setSize(75, 25);
-  p5.addKnob("r", 0, 255, 255, 275, 1050, 30);
-  p5.addKnob("g", 0, 255, 255, 315, 1050, 30);
-  p5.addKnob("b", 0, 255, 255, 355, 1050, 30);
-  p5.addToggle("shift").setPosition(405, 1050).setSize(30, 30);
+  p5.addSlider("desnity", 1, 10, 1, 10, height - 95, 200, 25);
+  p5.addSlider("lanes", 1, 10, 4, 10, height - 63, 200, 25);
+  p5.addSlider("speed", 1, 20, 5, 10, height - 30, 200, 25);
+  p5.addButton("left").setPosition(275, height - 85).setSize(75, 25);
+  p5.addButton("right").setPosition(375, height - 85).setSize(75, 25);
+  p5.addKnob("r", 0, 255, 255, 275, height - 50, 30);
+  p5.addKnob("g", 0, 255, 255, 315, height - 50, 30);
+  p5.addKnob("b", 0, 255, 255, 355, height - 50, 30);
+  p5.addToggle("shift").setPosition(405, height - 50).setSize(30, 30);
  
   //set intitally but can be changed later, these are a good example
   speed = 5;
@@ -291,5 +293,5 @@ void draw(){
   //block out the bottom for the controls
   noStroke();
   fill(0);
-  rect(0, 1000, width, 100);
+  rect(0, height - 100, width, 100);
 }
